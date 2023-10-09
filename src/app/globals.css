@@ -5,6 +5,8 @@
 :root {
   --bg: white;
   --textColor: black;
+  --softbg: rgb(239 246 255);
+  --ibg: rgb(219 234 254);
 }
 
 .container {
@@ -20,6 +22,8 @@
 .dark {
   --bg: #172554;
   --textColor: white;
+  --softbg: #1e3a8a;
+  --ibg: #1e40af;
 }
 
 @media screen and (max-width: 1536px) {

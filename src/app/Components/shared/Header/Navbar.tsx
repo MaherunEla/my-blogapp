@@ -5,9 +5,11 @@ import { BsSunFill } from "react-icons/bs";
 import { BiSolidMoon } from "react-icons/bi";
 import { NavbarData } from "./NavbarData";
 import { ThemeContext } from "@/context/ThemeContext";
+import { signIn, signOut, useSession } from "next-auth/react";
 
 const Navbar = () => {
   const { theme, toggle } = useContext(ThemeContext);
+  const { data: session } = useSession();
   return (
     <div className=" flex items-center justify-between py-5">
       <div className="flex gap-20 items-center">
@@ -32,8 +34,11 @@ const Navbar = () => {
         >
           Create
         </Link>
-        <button className="py-4 px-8 text-white bg-blue-600 text-lg font-normal rounded-lg">
-          Logout
+        <button
+          className="py-4 px-8 text-white bg-blue-600 text-lg font-normal rounded-lg"
+          onClick={session === null ? () => signIn() : () => signOut()}
+        >
+          {session === null ? "Log In " : "Log Out"}
         </button>
 
         <button className="text-blue " onClick={toggle}>
