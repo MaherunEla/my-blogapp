@@ -3,6 +3,14 @@ import { uploadImages } from "@/utils/UploadImage";
 import React from "react";
 
 const page = () => {
+
+  const handleSubmit = async ()=> {
+    const res = await fetch("api/blog",
+    {
+      method:"POST",
+      body
+    })
+  }
   return (
     <div className=" bg-[var(--softbg)] py-10 px-10 my-10">
       <h1 className="py-5 text-[var(--textColor)] text-4xl font-bold">
@@ -55,7 +63,7 @@ const page = () => {
         </select>
 
         <div>
-          <button className="px-6 py-3 bg-blue-600 rounded-md text-white text-lg font-normal">
+          <button onClick={handleSubmit} className="px-6 py-3 bg-blue-600 rounded-md text-white text-lg font-normal">
             Create New Blog
           </button>
         </div>
