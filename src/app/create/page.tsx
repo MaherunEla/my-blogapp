@@ -1,16 +1,37 @@
 "use client";
 import { uploadImages } from "@/utils/UploadImage";
-import React from "react";
-
-const page = () => {
-
-  const handleSubmit = async ()=> {
-    const res = await fetch("api/blog",
-    {
-      method:"POST",
-      body
-    })
-  }
+import React, { useState } from "react";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+const Createpage = () => {
+  const { data: session } = useSession();
+  const router = useRouter();
+  const [image, setImage] = useState("");
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [category, setCategory] = useState("");
+  //console.log(session, "session");
+  const handleSubmit = async () => {
+    if (session === null) {
+      router.push("/");
+    }
+    const res = await fetch("api/blog", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        image,
+        title,
+        description,
+        category,
+        userid: session?.user?.name,
+        userimage: session?.user?.image,
+        comments: [],
+      }),
+    });
+    console.log(res);
+  };
   return (
     <div className=" bg-[var(--softbg)] py-10 px-10 my-10">
       <h1 className="py-5 text-[var(--textColor)] text-4xl font-bold">
@@ -26,8 +47,9 @@ const page = () => {
           className="outline-none bg-[var(--ibg)] p-5 rounded-[10px]"
           onChange={async (e: any) => {
             const file = e.target.files[0];
-            const { url } = await uploadImages(file, () => {});
-            console.log(url);
+            const res = await uploadImages(file, () => {});
+            console.log(res?.url);
+            setImage(URL.createObjectURL(file));
           }}
         />
 
@@ -37,6 +59,7 @@ const page = () => {
         <input
           type="text"
           id="title"
+          onChange={(e) => setTitle(e.target.value)}
           className="py-3 border border-[--softbg] bg-[var(--ibg)] rounded-[10px] outline-[] px-5"
           placeholder="Enter Blog Title"
         />
@@ -47,6 +70,7 @@ const page = () => {
         <textarea
           className="p-5 border border-[--softbg] bg-[var(--ibg)] rounded-[10px] outline-none "
           id="description"
+          onChange={(e) => setDescription(e.target.value)}
           rows={6}
           cols={50}
           placeholder="Enter Blog Description"
@@ -55,15 +79,27 @@ const page = () => {
         <label className="text-[var(--textColor)] text-lg font-normal ">
           Category
         </label>
-        <select className="py-3  border border-[var(--softbg)] bg-[var(--ibg)] rounded-[10px] outline-none  px-5">
+        <select
+          onChange={(e) => {
+            setCategory(e.target.value);
+          }}
+          className="py-3  border border-[var(--softbg)] bg-[var(--ibg)] rounded-[10px] outline-none  px-5"
+        >
           <option selected value="0">
             Category
           </option>
-          <option value="1">hellow</option>
+          <option value="Science">Science</option>
+          <option value="Application">Application</option>
+          <option value="Data">Data</option>
+          <option value="Software">Software</option>
+          <option value="Technology">Technology</option>
         </select>
 
         <div>
-          <button onClick={handleSubmit} className="px-6 py-3 bg-blue-600 rounded-md text-white text-lg font-normal">
+          <button
+            onClick={handleSubmit}
+            className="px-6 py-3 bg-blue-600 rounded-md text-white text-lg font-normal"
+          >
             Create New Blog
           </button>
         </div>
@@ -72,4 +108,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Createpage;
