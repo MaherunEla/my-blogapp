@@ -20,7 +20,7 @@ const Navbar = () => {
         </h1>
         <div className="flex gap-10">
           {NavbarData.map((item, index) => (
-            <Link href="/" key={index}>
+            <Link href={item.href} key={index}>
               <h3 className="text-[var(--textColor)] text-lg font-semibold">
                 {item.name}
               </h3>

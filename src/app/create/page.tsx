@@ -3,6 +3,7 @@ import { uploadImages } from "@/utils/UploadImage";
 import React, { useState } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { SimpleEditor } from "../Components/tiptap/SimpleEditor";
 const Createpage = () => {
   const { data: session } = useSession();
   const router = useRouter();
@@ -67,14 +68,15 @@ const Createpage = () => {
         <label className="text-[var(--textColor)] text-lg font-normal">
           Description
         </label>
-        <textarea
+        <SimpleEditor />
+        {/* <textarea
           className="p-5 border border-[--softbg] bg-[var(--ibg)] rounded-[10px] outline-none "
           id="description"
           onChange={(e) => setDescription(e.target.value)}
           rows={6}
           cols={50}
           placeholder="Enter Blog Description"
-        />
+        /> */}
 
         <label className="text-[var(--textColor)] text-lg font-normal ">
           Category

@@ -60,6 +60,7 @@ export const PUT = async (req: NextResponse) => {
         comments: extractData.comments,
       },
     });
+    console.log({ updatedBlogPost });
     return new NextResponse(JSON.stringify({ updatedBlogPost, status: 200 }));
   } catch (e) {
     console.log(e);

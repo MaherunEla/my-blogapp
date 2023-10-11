@@ -1,13 +1,18 @@
 "use client";
 import { Blog } from "@/utils/types";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
 const BlogDetails = ({ blogData }: { blogData: Blog }) => {
   const [comment, setComment] = useState<string>("");
-
+  const router = useRouter();
+  console.log(comment);
+  const { data: session } = useSession();
   async function handleComment() {
     let extractComments = [...blogData.comments];
+    console.log({ extractComments });
     const comment = await fetch(`http://localhost:3000/api/blog`, {
       method: "PUT",
       body: JSON.stringify({
@@ -15,6 +20,12 @@ const BlogDetails = ({ blogData }: { blogData: Blog }) => {
         comments: extractComments,
       }),
     });
+    const data = await comment.json();
+    console.log(data);
+    if (data) {
+      setComment("");
+      router.refresh();
+    }
   }
   return (
     <div className="py-[10px]">

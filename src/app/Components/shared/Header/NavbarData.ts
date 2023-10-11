@@ -14,7 +14,7 @@ export const NavbarData: MenuItem[] = [
   {
     id: 3,
     name: "Blogs",
-    href: "/",
+    href: "/blogs",
   },
   {
     id: 4,
