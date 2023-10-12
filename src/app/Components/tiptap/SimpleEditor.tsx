@@ -1,6 +1,6 @@
 "use client";
-import React, { useEffect, useCallback, useState } from "react";
-import parser from "html-react-parser";
+import React, { useEffect, useCallback, useState, useContext } from "react";
+
 import classNames from "classnames";
 // => Tiptap packages
 import { useEditor, EditorContent, Editor, BubbleMenu } from "@tiptap/react";
@@ -14,6 +14,7 @@ import Italic from "@tiptap/extension-italic";
 import Strike from "@tiptap/extension-strike";
 import Code from "@tiptap/extension-code";
 import History from "@tiptap/extension-history";
+import { GlboalContext } from "@/context";
 // Custom
 import content from "./content";
 import * as Icons from "./Icons";
@@ -40,17 +41,18 @@ export function SimpleEditor() {
   const [modalIsOpen, setIsOpen] = useState(false);
   const [url, setUrl] = useState<string>("");
   const [description, setDecription] = useState("");
+  const { formData, setFormData } = useContext(GlboalContext);
+
   useEffect(() => {
     console.log(editor?.getText());
 
-    const l = editor?.getText();
-    // console.log(editor?.getHTML());
-
-    setDecription(editor?.getHTML());
+    setFormData({
+      ...formData,
+      description: editor?.getHTML(),
+    });
   }, [editor?.getHTML()]);
   console.log(editor?.getHTML());
   console.log({ description });
-  var parse = require("html-react-parser");
 
   const openModal = useCallback(() => {
     console.log(editor.chain().focus());
@@ -106,14 +108,14 @@ export function SimpleEditor() {
     return null;
   }
 
-  const handleSubmit = async () => {
-    const res = await fetch("api/blog", {
-      method: "POST",
-      body: JSON.stringify({
-        description,
-      }),
-    });
-  };
+  // const handleSubmit = async () => {
+  //   const res = await fetch("api/blog", {
+  //     method: "POST",
+  //     body: JSON.stringify({
+  //       description,
+  //     }),
+  //   });
+  // };
 
   return (
     <div className="editor ">
@@ -211,8 +213,8 @@ export function SimpleEditor() {
         onSaveLink={saveLink}
         onRemoveLink={removeLink}
       />
-      <button onClick={handleSubmit}>Submit</button>
-      <h4>{parse("<div>text</div>")}</h4>
+      {/* <button onClick={handleSubmit}>Submit</button>
+      <h4>{parse("<div>text</div>")}</h4> */}
     </div>
   );
 }

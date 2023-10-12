@@ -6,6 +6,7 @@ import Navbar from "./Components/shared/Header/Navbar";
 import { ThemeContext, ThemeContextProvider } from "@/context/ThemeContext";
 import ThemeProvider from "@/provider/ThemeProvider";
 import NextAuthProvider from "@/provider/NextAuthProvider";
+import GlobalState from "@/context";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,12 +21,14 @@ export default function RootLayout({
         <ThemeContextProvider>
           <ThemeProvider>
             <NextAuthProvider>
-              <div className="container">
-                <div className="wrapper">
-                  <Navbar />
-                  {children}
+              <GlobalState>
+                <div className="container">
+                  <div className="wrapper">
+                    <Navbar />
+                    {children}
+                  </div>
                 </div>
-              </div>
+              </GlobalState>
             </NextAuthProvider>
           </ThemeProvider>
         </ThemeContextProvider>

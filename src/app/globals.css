@@ -87,7 +87,7 @@ code {
 
 .menu {
   position: absolute;
-  top: 2px;
+  top: 6px;
   left: 2px;
   z-index: 1;
 
@@ -205,7 +205,7 @@ code {
 .ProseMirror {
   margin-top: 4px;
   padding: 48px 8px 8px;
-
+  height: 400px;
   border: 2px solid var(--color-gray-4);
   border-radius: 4px;
 }

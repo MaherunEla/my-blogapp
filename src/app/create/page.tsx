@@ -1,9 +1,10 @@
 "use client";
 import { uploadImages } from "@/utils/UploadImage";
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { SimpleEditor } from "../Components/tiptap/SimpleEditor";
+import { GlboalContext } from "@/context";
 const Createpage = () => {
   const { data: session } = useSession();
   const router = useRouter();
@@ -11,6 +12,8 @@ const Createpage = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");
+  const { formData, setFormData } = useContext(GlboalContext);
+
   //console.log(session, "session");
   const handleSubmit = async () => {
     if (session === null) {
@@ -22,16 +25,13 @@ const Createpage = () => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        image,
-        title,
-        description,
-        category,
+        ...formData,
         userid: session?.user?.name,
         userimage: session?.user?.image,
         comments: [],
       }),
     });
-    console.log(res);
+    console.log({ res });
   };
   return (
     <div className=" bg-[var(--softbg)] py-10 px-10 my-10">
@@ -51,6 +51,10 @@ const Createpage = () => {
             const res = await uploadImages(file, () => {});
             console.log(res?.url);
             setImage(URL.createObjectURL(file));
+            setFormData({
+              ...formData,
+              image: res?.url!,
+            });
           }}
         />
 
@@ -60,8 +64,14 @@ const Createpage = () => {
         <input
           type="text"
           id="title"
-          onChange={(e) => setTitle(e.target.value)}
-          className="py-3 border border-[--softbg] bg-[var(--ibg)] rounded-[10px] outline-[] px-5"
+          onChange={(e) => {
+            setTitle(e.target.value);
+            setFormData({
+              ...formData,
+              title,
+            });
+          }}
+          className="py-3 border border-[--softbg] bg-[var(--ibg)] rounded-[10px] outline-none px-5"
           placeholder="Enter Blog Title"
         />
 
@@ -84,6 +94,10 @@ const Createpage = () => {
         <select
           onChange={(e) => {
             setCategory(e.target.value);
+            setFormData({
+              ...formData,
+              category: e.target.value,
+            });
           }}
           className="py-3  border border-[var(--softbg)] bg-[var(--ibg)] rounded-[10px] outline-none  px-5"
         >

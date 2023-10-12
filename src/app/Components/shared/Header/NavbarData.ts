@@ -9,7 +9,7 @@ export const NavbarData: MenuItem[] = [
   {
     id: 2,
     name: "Category",
-    href: "/",
+    href: "/category/Application",
   },
   {
     id: 3,

@@ -47,9 +47,15 @@ const Navbar = () => {
           {session === null ? "Log In " : "Log Out"}
         </button>
 
-        <button className="text-blue " onClick={toggle}>
-          <BiSolidMoon size={30} />
-        </button>
+        {theme === "dark" ? (
+          <button className="text-[var(--textColor)] " onClick={toggle}>
+            <BsSunFill size={30} />
+          </button>
+        ) : (
+          <button className="text-[var(--textColor)] " onClick={toggle}>
+            <BiSolidMoon size={30} />
+          </button>
+        )}
       </div>
     </div>
   );
