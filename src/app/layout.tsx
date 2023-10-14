@@ -7,9 +7,9 @@ import { ThemeContext, ThemeContextProvider } from "@/context/ThemeContext";
 import ThemeProvider from "@/provider/ThemeProvider";
 import NextAuthProvider from "@/provider/NextAuthProvider";
 import GlobalState from "@/context";
-
+import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 const inter = Inter({ subsets: ["latin"] });
-
+const queryClient = new QueryClient();
 export default function RootLayout({
   children,
 }: {
@@ -22,12 +22,14 @@ export default function RootLayout({
           <ThemeProvider>
             <NextAuthProvider>
               <GlobalState>
-                <div className="container">
-                  <div className="wrapper">
-                    <Navbar />
-                    {children}
+                <QueryClientProvider client={queryClient}>
+                  <div className="container">
+                    <div className="wrapper">
+                      <Navbar />
+                      {children}
+                    </div>
                   </div>
-                </div>
+                </QueryClientProvider>
               </GlobalState>
             </NextAuthProvider>
           </ThemeProvider>
