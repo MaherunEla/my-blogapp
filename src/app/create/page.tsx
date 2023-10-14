@@ -5,6 +5,7 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { SimpleEditor } from "../Components/tiptap/SimpleEditor";
 import { GlboalContext } from "@/context";
+import { PopupEditor } from "../Components/tiptap/PopupEditor";
 const Createpage = () => {
   const { data: session } = useSession();
   const router = useRouter();
@@ -61,19 +62,8 @@ const Createpage = () => {
         <label className="text-[var(--textColor)] text-lg font-normal">
           Title
         </label>
-        <input
-          type="text"
-          id="title"
-          onChange={(e) => {
-            setTitle(e.target.value);
-            setFormData({
-              ...formData,
-              title,
-            });
-          }}
-          className="py-3 border border-[--softbg] bg-[var(--ibg)] rounded-[10px] outline-none px-5"
-          placeholder="Enter Blog Title"
-        />
+
+        <PopupEditor />
 
         <label className="text-[var(--textColor)] text-lg font-normal">
           Description

@@ -1,5 +1,6 @@
 import prisma from "@/utils/connect";
-import { NextResponse } from "next/server";
+import { revalidatePath, revalidateTag } from "next/cache";
+import { NextRequest, NextResponse } from "next/server";
 
 export const GET = async (req: any) => {
   try {
@@ -30,7 +31,7 @@ export const POST = async (req: any) => {
   }
 };
 
-export const DELETE = async (req: NextResponse) => {
+export const DELETE = async (req: NextRequest) => {
   try {
     const url = new URL(req.url);
     const Deleteblogid = url.searchParams.get("id");
@@ -40,6 +41,8 @@ export const DELETE = async (req: NextResponse) => {
         id: Number(Deleteblogid),
       },
     });
+    revalidateTag("blogs");
+    revalidatePath("/blogs");
     return new NextResponse(JSON.stringify({ deletepost, status: 200 }));
   } catch (err) {
     console.log(err);
@@ -49,7 +52,7 @@ export const DELETE = async (req: NextResponse) => {
   }
 };
 
-export const PUT = async (req: NextResponse) => {
+export const PUT = async (req: NextRequest) => {
   try {
     const extractData = await req.json();
     const updatedBlogPost = await prisma.post.update({

@@ -1,6 +1,5 @@
 "use client";
-import React, { useEffect, useCallback, useState, useContext } from "react";
-
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import classNames from "classnames";
 // => Tiptap packages
 import { useEditor, EditorContent, Editor, BubbleMenu } from "@tiptap/react";
@@ -20,7 +19,7 @@ import content from "./content";
 import * as Icons from "./Icons";
 import { LinkModal } from "./LinkModal";
 
-export function SimpleEditor() {
+export function PopupEditor() {
   const editor = useEditor({
     extensions: [
       Document,
@@ -40,22 +39,18 @@ export function SimpleEditor() {
   }) as Editor;
   const [modalIsOpen, setIsOpen] = useState(false);
   const [url, setUrl] = useState<string>("");
-  const [description, setDecription] = useState("");
+  console.log(editor?.getHTML());
   const { formData, setFormData } = useContext(GlboalContext);
 
   useEffect(() => {
-    console.log(editor?.getText());
-
     setFormData({
       ...formData,
-      description: editor?.getHTML(),
+      title: editor?.getHTML(),
     });
   }, [editor?.getHTML()]);
   console.log(editor?.getHTML());
-  console.log({ description });
 
   const openModal = useCallback(() => {
-    console.log(editor.chain().focus());
     setUrl(editor.getAttributes("link").href);
     setIsOpen(true);
   }, [editor]);
@@ -76,6 +71,7 @@ export function SimpleEditor() {
     } else {
       editor.chain().focus().extendMarkRange("link").unsetLink().run();
     }
+    editor.commands.blur();
     closeModal();
   }, [editor, url, closeModal]);
 
@@ -108,29 +104,29 @@ export function SimpleEditor() {
     return null;
   }
 
-  // const handleSubmit = async () => {
-  //   const res = await fetch("api/blog", {
-  //     method: "POST",
-  //     body: JSON.stringify({
-  //       description,
-  //     }),
-  //   });
-  // };
-
   return (
-    <div className="editor ">
-      <div className="menu">
+    <div className="editor editor-mini">
+      <BubbleMenu
+        pluginKey="bubbleMenuText"
+        className="bubble-menu-dark"
+        tippyOptions={{ duration: 150 }}
+        editor={editor}
+        shouldShow={({ editor, view, state, oldState, from, to }) => {
+          // only show if range is selected.
+          return from !== to;
+        }}
+      >
         <button
-          type="button"
           className="menu-button"
+          type="button"
           onClick={() => editor.chain().focus().undo().run()}
           disabled={!editor.can().undo()}
         >
           <Icons.RotateLeft />
         </button>
         <button
-          type="button"
           className="menu-button"
+          type="button"
           onClick={() => editor.chain().focus().redo().run()}
           disabled={!editor.can().redo()}
         >
@@ -190,10 +186,11 @@ export function SimpleEditor() {
         >
           <Icons.Code />
         </button>
-      </div>
+      </BubbleMenu>
 
       <BubbleMenu
-        className="bubble-menu-light"
+        pluginKey="bubbleMenuLink"
+        className="bubble-menu-dark"
         tippyOptions={{ duration: 150 }}
         editor={editor}
         shouldShow={({ editor, view, state, oldState, from, to }) => {
@@ -217,12 +214,10 @@ export function SimpleEditor() {
         onRequestClose={closeModal}
         contentLabel="Edit Link Modal"
         closeModal={closeModal}
-        onChangeUrl={(e) => setUrl(e.target.value)}
+        onChangeUrl={(e: any) => setUrl(e.target.value)}
         onSaveLink={saveLink}
         onRemoveLink={removeLink}
       />
-      {/* <button onClick={handleSubmit}>Submit</button>
-      <h4>{parse("<div>text</div>")}</h4> */}
     </div>
   );
 }

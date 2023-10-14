@@ -211,7 +211,8 @@ code {
 }
 
 .editor-mini .ProseMirror {
-  padding-top: 8px;
+  padding: 10px;
+  height: 50px;
 }
 
 .ProseMirror-focused {
