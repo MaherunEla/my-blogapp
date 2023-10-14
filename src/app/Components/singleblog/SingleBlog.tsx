@@ -47,7 +47,7 @@ const SingleBlog = ({
             />
           </div>
         </Link>
-        <h1 className="font-bold text-[var(--textColor)]">{title}</h1>
+        <h1 className="font-bold text-[var(--textColor)]">{parse(title)}</h1>
         <h6 className="text-[var(--textColor)]">{parse(description)}</h6>
         <div className="flex gap-2 items-center justify-between">
           <div className="flex gap-2">

@@ -50,7 +50,7 @@ const CategoryList = ({ list }: { list: any }) => {
               Filter by Category
             </h2>
             <div className="grid grid-cols-3 gap-5">
-              {["Application", "Data", "Software", "Technology", "Secice"].map(
+              {["Application", "Data", "Software", "Technology", "Science"].map(
                 (item, index) => (
                   <div
                     key={index}
