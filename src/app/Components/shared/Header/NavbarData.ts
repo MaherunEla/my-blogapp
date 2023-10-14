@@ -19,6 +19,6 @@ export const NavbarData: MenuItem[] = [
   {
     id: 4,
     name: "Search",
-    href: "/",
+    href: "/search",
   },
 ];
